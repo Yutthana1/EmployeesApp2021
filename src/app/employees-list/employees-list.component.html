@@ -1,0 +1,275 @@
+<div class="container-fluid m-3">
+  <h1>Employee List</h1>
+  <!--  message Error create name fild-->
+<!--  <div class="messageErr">-->
+<!--    <p-messages *ngIf="Employee_name.invalid && Employee_name.touched" [(value)]="msgName"-->
+<!--                [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'3ms'"></p-messages>-->
+
+<!--    <div class="nameberonly">-->
+
+<!--    </div>-->
+<!--  </div>-->
+  <!--  message Error create name fild-->
+  <p-toolbar>
+    <div class="p-toolbar-group-left"></div>
+    <div class="p-toolbar-group-right">
+      <p-button label="Create New" (click)="showDialogCreate()"></p-button>
+    </div>
+  </p-toolbar>
+  <div class="">
+    <p-table [value]="employeeList" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Employee Name</th>
+          <th>Designation</th>
+          <th>Address</th>
+          <th>Employee Salary</th>
+          <th>Joining Date</th>
+          <th>Edit Action</th>
+          <th>Details Action</th>
+          <th>Delete Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-empList let-i="rowIndex">
+        <tr>
+          <td>{{empList.nameEmp}}</td>
+          <td>{{empList.designation}}</td>
+          <td>{{empList.address}}</td>
+          <td>{{empList.salary}}</td>
+          <td>{{empList.dateTime|date:"dd-MM-yyyy HH:mm"}}</td>
+          <td>
+            <p-button label="Edit" (click)="showEditDialog(empList.emp_ID)"></p-button>
+          </td>
+          <td>
+            <p-button styleClass="p-button-help" label="Detail" (click)="showDetailDialog(empList.emp_ID)"></p-button>
+          </td>
+          <td>
+            <p-button styleClass="p-button-danger" label="Delete" (click)="showDeleteDialog(empList.emp_ID)"></p-button>
+          </td>
+
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!--Dialog Detail-->
+    <p-dialog [(visible)]="displayDetail" [breakpoints]="{'960px': '85vw', '640px': '100vw'}" [style]="{width: '30vw'}" >
+      <ng-template pTemplate="header">
+        <h2>Detail Employee</h2>
+      </ng-template>
+      <ng-template pTemplate="body">
+        <hr>
+        <div class="p-fluid">
+          <div class="p-field row">
+            <div class="col-md-5">
+              <h6>Employees Name</h6>
+            </div>
+            <div class="col-md-7">
+              <span>{{employeeDetaill.nameEmp}}</span>
+            </div>
+          </div>
+          <div class="p-field row">
+            <div class="col-md-5">
+              <h6>Designation</h6>
+            </div>
+            <div class="col-md-7">
+              <span>{{employeeDetaill.designation}}</span>
+            </div>
+          </div>
+          <div class="p-field row">
+            <div class="col-md-5">
+              <h6>Address</h6>
+            </div>
+            <div class="col-md-7">
+              <span>{{employeeDetaill.address}}</span>
+            </div>
+          </div>
+          <div class="p-field row">
+            <div class="col-md-5">
+              <h6>Employee Salary</h6>
+            </div>
+            <div class="col-md-7">
+              <span>{{employeeDetaill.salary}}</span>
+            </div>
+          </div>
+          <div class="p-field row">
+            <div class="col-md-5">
+              <h6>Joining Date</h6>
+            </div>
+            <div class="col-md-7">
+              <span>{{employeeDetaill.dateTime|date:"dd-MM-yyyy HH:mm"}}</span>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <!--        //buttons-->
+        <div class="p-toolbar-group-left">
+          <p-button label="Edit" (onClick)="showEditDialog(employeeDetaill.emp_ID)"></p-button>
+          <p-button styleClass="p-button-danger" label="Back" (onClick)="Bt_backDialog()"></p-button>
+        </div>
+        <div class="p-toolbar-group-right"></div>
+      </ng-template>
+    </p-dialog>
+    <!--Dialog Detail-->
+
+    <!--  <app-employees-create [showCreate]="displayEdit" ></app-employees-create>-->
+
+
+    <!--Dialog Edit-->
+    <p-dialog [(visible)]="displayEdit" [breakpoints]="{'960px': '85vw', '640px': '100vw'}" [style]="{width: '30vw'}" (onHide)="resetFromControll()">
+      <ng-template pTemplate="header">
+        <h2>EditCreate Employee</h2>
+      </ng-template>
+      <ng-template pTemplate="body">
+        <hr>
+        <div class="p-fluid">
+          <div class="p-field">
+            <label for="employeeName_Edit">Employee Name</label>
+            <input id="employeeName_Edit" type="text" [formControl]="Employee_name"   pInputText aria-describedby="employeeName-help">
+            <small *ngIf="Employee_name.hasError('required')"  style="color: red">The Employee Name field is required.</small>
+          </div>
+          <div class="p-field pt-md-3">
+            <label for="designationEdit">Designation</label>
+            <input id="designationEdit" type="text" pInputText [formControl]="Employee_designation">
+          </div>
+          <div class="p-field pt-md-3">
+            <label for="addressEdit">Address</label>
+            <input id="addressEdit" type="text" pInputText [formControl]="Employee_address">
+          </div>
+          <div class="p-field pt-md-3">
+            <label for="employeeSalaryEdit">Employee Salary</label>
+            <input id="employeeSalaryEdit" type="text" pInputText aria-describedby="employeeSalary-help" [formControl]="Employee_salary">
+            <small *ngIf="Employee_salary.hasError('required')"  style="color: red">The Employee Salary field is required.</small>
+            <small *ngIf="Employee_salary.hasError('pattern')"  style="color: red">The Employee only number.</small>
+            <small *ngIf="Employee_salary.hasError('min')"  style="color: red">The Employee Number of digits greater than 0.</small>
+          </div>
+          <div class="p-field pt-md-3">
+            <label for="join_dateEdit">Joining Date</label>
+            <input id="join_dateEdit" type="datetime-local" min="2018-01-01T00:00" max="2030-01-01T00:00" pInputText [formControl]="Employee_date">
+            <small *ngIf="Employee_date.hasError('required')"  style="color: red">Please select date.</small>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <!--        //buttons-->
+        <div class="p-toolbar-group-left">
+          <p-button label="Edit" (onClick)="bt_EditEmp()"></p-button>
+          <p-button styleClass="p-button-danger" label="Back" (onClick)="Bt_backDialog()"></p-button>
+        </div>
+        <div class="p-toolbar-group-right"></div>
+      </ng-template>
+    </p-dialog>
+    <!--Dialog Edit-->
+
+    <!--Dialog Create-->
+    <p-dialog [(visible)]="displayCreate" [breakpoints]="{'960px': '85vw', '640px': '100vw'}" [style]="{width: '30vw'}" (onHide)="resetFromControll()">
+      <ng-template pTemplate="header">
+        <h2>Create Employee</h2>
+      </ng-template>
+      <ng-template pTemplate="body">
+        <hr>
+        <div class="p-fluid">
+          <div class="p-field">
+            <label for="employeeName">Employee Name</label>
+            <input id="employeeName" type="text" [formControl]="Employee_name" pInputText>
+            <small *ngIf="Employee_name.hasError('required')"  style="color: red">The Employee Name field is required.</small>
+          </div>
+          <div class="p-field pt-md-3">
+            <label for="designation">Designation</label>
+            <input id="designation" [formControl]="Employee_designation" type="text" pInputText>
+          </div>
+          <div class="p-field pt-md-3">
+            <label for="address">Address</label>
+            <input id="address" [formControl]="Employee_address" type="text" pInputText>
+          </div>
+          <div class="p-field pt-md-3">
+            <label for="employeeSalary">Employee Salary</label>
+            <input id="employeeSalary" type="text" [formControl]="Employee_salary" pInputText>
+            <small *ngIf="Employee_salary.hasError('required')"  style="color: red">The Employee Salary field is required.</small>
+            <small *ngIf="Employee_salary.hasError('pattern')"  style="color: red">The Employee only number.</small>
+            <small *ngIf="Employee_salary.hasError('min')"  style="color: red">The Employee Number of digits greater than 0.</small>
+          </div>
+          <div class="p-field pt-md-3">
+            <label for="join_date">Joining Date</label>
+<!--            <p-calendar [(ngModel)]="Dates" [showTime]="true" dateFormat="dd.mm.yy" inputId="join_date"></p-calendar>-->
+            <input id="join_date" type="datetime-local" [formControl]="Employee_date" pInputText>
+            <small *ngIf="Employee_date.hasError('required')"  style="color: red">Please select date.</small>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <!--        //buttons-->
+        <div class="p-toolbar-group-left">
+          <p-button label="Save" (onClick)="saveCreate()"></p-button>
+          <p-button styleClass="p-button-danger" label="Back" (onClick)="Bt_backDialog()"></p-button>
+        </div>
+        <div class="p-toolbar-group-right"></div>
+      </ng-template>
+    </p-dialog>
+    <!--Dialog Create-->
+
+    <!--Dialog Delete-->
+    <p-dialog [(visible)]="displayDelete" [breakpoints]="{'960px': '85vw', '640px': '100vw'}" [style]="{width: '30vw'}" >
+      <ng-template pTemplate="header">
+        <h2>Delete Employee</h2>
+        <h4>Would you like to continue?</h4>
+      </ng-template>
+      <ng-template pTemplate="body">
+        <hr>
+        <div class="p-fluid">
+          <div class="p-field row">
+            <div class="col-md-5">
+              <h6>Employees Name</h6>
+            </div>
+            <div class="col-md-7">
+              <span>{{employeeDetaill.nameEmp}}</span>
+            </div>
+          </div>
+          <div class="p-field row">
+            <div class="col-md-5">
+              <h6>Designation</h6>
+            </div>
+            <div class="col-md-7">
+              <span>{{employeeDetaill.designation}}</span>
+            </div>
+          </div>
+          <div class="p-field row">
+            <div class="col-md-5">
+              <h6>Address</h6>
+            </div>
+            <div class="col-md-7">
+              <span>{{employeeDetaill.address}}</span>
+            </div>
+          </div>
+          <div class="p-field row">
+            <div class="col-md-5">
+              <h6>Employee Salary</h6>
+            </div>
+            <div class="col-md-7">
+              <span>{{employeeDetaill.salary}}</span>
+            </div>
+          </div>
+          <div class="p-field row">
+            <div class="col-md-5">
+              <h6>Joining Date</h6>
+            </div>
+            <div class="col-md-7">
+              <span>{{employeeDetaill.dateTime|date:"dd-MM-yyyy HH:mm"}}</span>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <!--        //buttons-->
+        <div class="p-toolbar-group-left">
+          <p-button label="Yes" (onClick)="Bt_delete()"></p-button>
+          <p-button styleClass="p-button-danger" label="No" (onClick)="Bt_backDialog()"></p-button>
+        </div>
+        <div class="p-toolbar-group-right"></div>
+      </ng-template>
+    </p-dialog>
+    <!--Dialog Delete-->
+  </div>
+</div>
+<!--{{Employee_salary.errors | json}}-->
+<!--{{Employee_date.value | json}}-->

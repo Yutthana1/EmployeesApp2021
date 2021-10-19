@@ -1,0 +1,41 @@
+<p-dialog  [(visible)]="showCreate" [breakpoints]="{'960px': '85vw', '640px': '100vw'}" [style]="{width: '30vw'}" >
+  <ng-template pTemplate="header">
+    <h2>EditCreate Employee page 2</h2>
+  </ng-template>
+  <ng-template pTemplate="body">
+    <hr>
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="employeeName">Employee Name</label>
+        <input id="employeeName" type="text" pInputText aria-describedby="employeeName-help">
+        <small id="employeeName-help" style="color: red">The Employee Name field is required.</small>
+      </div>
+      <div class="p-field pt-md-3">
+        <label for="designation">Designation</label>
+        <input id="designation" type="text" pInputText>
+      </div>
+      <div class="p-field pt-md-3">
+        <label for="address">Address</label>
+        <input id="address" type="text" pInputText>
+      </div>
+      <div class="p-field pt-md-3">
+        <label for="employeeSalary">Employee Salary</label>
+        <input id="employeeSalary" type="text" pInputText aria-describedby="employeeSalary-help">
+        <small id="employeeSalary-help" style="color: red">The Employee Salary field is required.</small>
+      </div>
+      <div class="p-field pt-md-3">
+        <label for="join_date">Joining Date</label>
+        <input id="join_date"  type="datetime-local" pInputText >
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <!--        //buttons-->
+    <div class="p-toolbar-group-left">
+      <p-button label="Save" ></p-button>
+      <p-button styleClass="p-button-danger" label="Back" ></p-button>
+    </div>
+    <div class="p-toolbar-group-right"></div>
+  </ng-template>
+</p-dialog>
+
